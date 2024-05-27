@@ -1,10 +1,25 @@
 package models;
 
 import java.util.Arrays;
+import java.util.function.Function;
 
 public final class Glider extends Airline {
     public Glider() {
         super(300, 750, 25);
+    }
+
+    @Override
+    public Function<Double, Double> ticketPrice() {
+        return distance -> distance / 25;
+    }
+
+    public Double luggagePrice() {
+        return 30.0;
+    }
+
+    public Double seatPrice(Integer seat) {
+        // The price is the same for all seats
+        return 5.0;
     }
 
     @Override

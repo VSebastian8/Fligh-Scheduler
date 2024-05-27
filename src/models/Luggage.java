@@ -1,14 +1,20 @@
 package models;
 
+import exceptions.LuggageWeightException;
+
 public class Luggage {
     static Double max_weight = 20d; //per luggage
-    private Double weight;
+    private final Double weight;
 
-    public Luggage(Double weight) {
+    public Luggage(Double weight) throws LuggageWeightException {
         if (weight > max_weight) {
-            System.out.println("Handle weight exemption");
+            throw new LuggageWeightException(max_weight - weight);
         }
         this.weight = weight;
+    }
+
+    public Luggage(Luggage suitcase) {
+        this.weight = suitcase.weight;
     }
 
     public Double getWeight() {

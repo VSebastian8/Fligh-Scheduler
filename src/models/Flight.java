@@ -1,5 +1,10 @@
 package models;
 
+import exceptions.CargoPlaneException;
+import exceptions.PlaneSeatsException;
+import exceptions.TakenSeatException;
+
+
 public class Flight {
     private final Airport source;
     private final Airport destination;
@@ -24,6 +29,36 @@ public class Flight {
 
     public void addStop(Airport stopover) {
         this.stopover = stopover;
+    }
+
+    public Double leftCapacity() {
+        return plane.getMax_weight() - plane.getCurrent_weight();
+    }
+
+    public Integer makeReservation() throws CargoPlaneException, PlaneSeatsException {
+        // Try to reserve a random seat
+        if (plane instanceof Airline) {
+            return ((Airline) plane).reserveSeat();
+        } else {
+            throw new CargoPlaneException(plane.getPlaneID());
+        }
+    }
+
+    public Double makeReservation(Integer seat) throws CargoPlaneException, TakenSeatException, IndexOutOfBoundsException {
+        // Try to reserve a specific seat, returns extra cost
+        if (plane instanceof Airline) {
+            return ((Airline) plane).reserveSeat(seat);
+        } else {
+            throw new CargoPlaneException(plane.getPlaneID());
+        }
+    }
+
+    public Double luggagePrice() {
+        return ((Airline) plane).luggagePrice();
+    }
+
+    public Double ticketPrice() {
+        return ((Airline) plane).ticketPrice().apply(distance);
     }
 
     @Override

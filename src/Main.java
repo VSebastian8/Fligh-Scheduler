@@ -9,8 +9,11 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Database.selectall();
-
+        Database data = new Database();
+        data.selectAirports();
+//        data.showAirports();
+        data.selectPlanes();
+        data.showPlanes();
     }
 
     public static void test_classes() {

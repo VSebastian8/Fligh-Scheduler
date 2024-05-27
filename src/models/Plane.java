@@ -22,10 +22,18 @@ public abstract class Plane {
         return current_weight;
     }
 
+    public void setPlaneID(Integer planeID) {
+        this.planeID = planeID;
+    }
+
+    public void setCurrent_weight(Double current_weight) {
+        this.current_weight = current_weight;
+    }
+
     public Integer getPlaneID() {
         return planeID;
     }
-    
+
     abstract public String toString();
 }
 

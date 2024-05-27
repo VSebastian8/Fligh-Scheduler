@@ -39,6 +39,14 @@ public abstract class Airline extends Plane {
         return seatPrice(seat);
     }
 
+    public void setReservedSeats(Integer[] res) {
+        for (int i : res) {
+            if (i > 0 && i < reserved_seats.length) {
+                reserved_seats[i] = true;
+            }
+        }
+    }
+
     abstract public Function<Double, Double> ticketPrice();
 
     abstract public Double luggagePrice();

@@ -4,7 +4,7 @@ import java.util.function.Function;
 
 public final class Glider extends Airline {
     public Glider() {
-        super(300, 750, 25);
+        super(300, 750, 15);
     }
 
     @Override

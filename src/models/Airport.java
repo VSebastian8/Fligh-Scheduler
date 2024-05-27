@@ -1,43 +1,34 @@
 package models;
 
-public class Airport {
-    private final String country;
-    private final String city;
-    private Double rating;
+import enums.Cities;
 
-    public Airport(String country, String city) {
-        this.country = country;
+public class Airport {
+    private final Cities city;
+    private final Double rating;
+
+    public Airport(Cities city) {
         this.city = city;
         this.rating = -1d;
     }
 
-    public Airport(String country, String city, Double rating) {
-        this.country = country;
+    public Airport(Cities city, Double rating) {
         this.city = city;
         this.rating = rating;
     }
 
     public String getCity() {
-        return city;
+        return city.toString();
     }
 
     public String getCountry() {
-        return country;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
+        return city.getCountry().toString();
     }
 
     @Override
     public String toString() {
         return "Airport{" +
-                "country='" + country + '\'' +
-                ", city='" + city + '\'' +
+                "country='" + getCountry() + '\'' +
+                ", city='" + getCity() + '\'' +
                 ", rating=" + (rating == -1 ? "TBD" : rating.toString()) +
                 '}';
     }

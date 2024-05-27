@@ -1,6 +1,5 @@
 package models;
 
-import java.util.Arrays;
 import java.util.function.Function;
 
 public final class Glider extends Airline {

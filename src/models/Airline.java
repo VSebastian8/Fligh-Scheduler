@@ -13,6 +13,9 @@ public abstract class Airline extends Plane {
         super(max_weight, max_distance);
         this.seat_number = seat_number;
         this.reserved_seats = new Boolean[seat_number];
+        for (int i = 0; i < seat_number; i++) {
+            this.reserved_seats[i] = false;
+        }
     }
 
     public Integer reserveSeat() throws PlaneSeatsException {

@@ -7,26 +7,29 @@ import exceptions.TakenSeatException;
 public class Ticket {
     private Double price;
     private Integer seat;
-    private Luggage[] luggage;
     private final Flight flight;
+    private Luggage[] luggage;
+
 
     public Ticket(Double price, Integer seat, Flight flight) {
         this.price = price;
         this.seat = seat;
-        this.luggage = new Luggage[0];
         this.flight = flight;
+        this.luggage = new Luggage[0];
     }
 
     public Ticket(Flight flight) throws CargoPlaneException, PlaneSeatsException {
         this.seat = flight.makeReservation();
         this.flight = flight;
         this.price = flight.ticketPrice();
+        this.luggage = new Luggage[0];
     }
 
     public Ticket(Flight flight, Integer seat) throws CargoPlaneException, TakenSeatException, IndexOutOfBoundsException {
         this.seat = seat;
         this.price = flight.makeReservation(seat) + flight.ticketPrice();
         this.flight = flight;
+        this.luggage = new Luggage[0];
     }
 
     public void changeSeat(Integer seat) throws CargoPlaneException, TakenSeatException, IndexOutOfBoundsException {

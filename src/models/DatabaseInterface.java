@@ -10,5 +10,25 @@ public interface DatabaseInterface {
 
     void selectPlanes();
 
+    void selectFlights();
+
+    void selectTickets();
+
     void showAirports();
+
+    void showPlanes();
+
+    void showFlights();
+
+    void showTickets();
+
+    default void showDatabase() {
+        showAirports();
+        System.out.println();
+        showPlanes();
+        System.out.println();
+        showFlights();
+        System.out.println();
+        showTickets();
+    }
 }

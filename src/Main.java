@@ -9,11 +9,13 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Database data = new Database();
+        Database data = Database.getDatabase();
         data.selectAirports();
-//        data.showAirports();
         data.selectPlanes();
-        data.showPlanes();
+        data.selectFlights();
+        data.selectTickets();
+
+        data.showDatabase();
     }
 
     public static void test_classes() {
@@ -28,8 +30,6 @@ public class Main {
         Flight MS802 = new Flight("MS802", AMarseille, ASeville, planes[3], 1800.0, 321, "12:45", "18:06", " 11:17");
         Flight SB900 = new Flight("SB900", ASeville, ABerlin, planes[1], 2310.0, 321, "13:44", "19:05", " 10:20");
 
-        Ticket ticket1 = new Ticket(15.6, 4, BM701);
-        System.out.println(ticket1);
 
         Ticket ticket2;
         try {
@@ -58,7 +58,7 @@ public class Main {
         } catch (TakenSeatException err) {
             System.out.println(err.getMessage());
             try {
-                ticket3 = new Ticket(MS802);
+                ticket3 = new Ticket(BM701);
                 ticket3.changeSeat(18);
             } catch (Exception errr) {
                 System.out.println(errr.getMessage());

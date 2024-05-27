@@ -12,9 +12,9 @@ public class Flight {
     private final Plane plane;
     private final Double distance; // kilometers
     private final Integer duration; // minutes
-    private final String takeoff_time; // "hh:mm"
+    private final String takeoff_time; // "hh:mm:ss"
     private final String landing_time;
-    private final String day; // "mm:dd"
+    private final String day; // "yyyy-mm-dd"
     private Airport stopover = null; // null for direct flights
 
     public Flight(String name, Airport source, Airport destination, Plane plane, Double distance, Integer duration, String takeoff_time, String landing_time, String day) {
@@ -63,12 +63,15 @@ public class Flight {
         return ((Airline) plane).ticketPrice().apply(distance);
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
-                "name =" + name +
-                ",source =" + source +
-                ", destination = " + destination +
+                "name = " + name +
+                ", " + source.getCity() + " -> " + destination.getCity() +
                 ", distance = " + distance +
                 ", duration = " + duration +
                 ", takeoff_time = '" + takeoff_time +

@@ -24,9 +24,9 @@ public final class Glider extends Airline {
     @Override
     public String toString() {
         return "Glider Airline{" +
-                "max_weight = " + max_weight +
-                ", max_distance = " + max_distance +
-                ", seat_number = " + seat_number +
+                "id = " + planeID +
+                ", weight = " + current_weight + "/" + max_weight +
+                ", number of seats = " + seat_number +
                 '}';
     }
 }

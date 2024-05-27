@@ -1,6 +1,7 @@
 package models;
 
 import exceptions.CargoPlaneException;
+import exceptions.LuggageWeightException;
 import exceptions.PlaneSeatsException;
 import exceptions.TakenSeatException;
 
@@ -9,13 +10,23 @@ public class Ticket {
     private Integer seat;
     private final Flight flight;
     private Luggage[] luggage;
+    private final Integer id;
+    static Integer counterId = 0;
 
-
-    public Ticket(Double price, Integer seat, Flight flight) {
+    public Ticket(Double price, Integer seat, Flight flight, Integer id, Double[] luggage_weights) {
         this.price = price;
         this.seat = seat;
         this.flight = flight;
-        this.luggage = new Luggage[0];
+        this.id = id;
+        this.luggage = new Luggage[luggage_weights.length];
+        for (int w = 0; w < luggage_weights.length; w++) {
+            try {
+                this.luggage[w] = new Luggage(luggage_weights[w]);
+            } catch (LuggageWeightException err) {
+                System.out.println(err.getMessage());
+                System.out.println("Wrong values from database?");
+            }
+        }
     }
 
     public Ticket(Flight flight) throws CargoPlaneException, PlaneSeatsException {
@@ -23,6 +34,7 @@ public class Ticket {
         this.flight = flight;
         this.price = flight.ticketPrice();
         this.luggage = new Luggage[0];
+        id = ++counterId;
     }
 
     public Ticket(Flight flight, Integer seat) throws CargoPlaneException, TakenSeatException, IndexOutOfBoundsException {
@@ -30,6 +42,7 @@ public class Ticket {
         this.price = flight.makeReservation(seat) + flight.ticketPrice();
         this.flight = flight;
         this.luggage = new Luggage[0];
+        id = ++counterId;
     }
 
     public void changeSeat(Integer seat) throws CargoPlaneException, TakenSeatException, IndexOutOfBoundsException {
@@ -52,7 +65,8 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{" +
-                "price = " + price +
+                "id = " + id +
+                ", price = " + price +
                 ", seat = " + seat +
                 ", luggage_count = " + luggage.length +
                 ", flight = " + flight.toString() +

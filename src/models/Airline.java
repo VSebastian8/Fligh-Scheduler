@@ -41,14 +41,37 @@ public abstract class Airline extends Plane {
 
     public void setReservedSeats(Integer[] res) {
         for (int i : res) {
-            if (i > 0 && i < reserved_seats.length) {
+            if (i >= 0 && i < reserved_seats.length) {
                 reserved_seats[i] = true;
             }
         }
     }
 
+    public void vacateSeat(Integer seat) {
+        if (seat > 0 && seat < seat_number)
+            reserved_seats[seat] = false;
+    }
+
     public Integer getSeatNumber() {
         return seat_number;
+    }
+
+    public Integer[] getReservedSeats() {
+        int count = 0;
+        for (boolean r : reserved_seats)
+            if (r)
+                count++;
+
+        Integer[] arr = new Integer[count];
+        count = 0;
+        for (int i = 0; i < seat_number; i++) {
+            if (reserved_seats[i]) {
+                arr[count] = i;
+                count++;
+            }
+        }
+
+        return arr;
     }
 
     abstract public Function<Double, Double> ticketPrice();

@@ -8,7 +8,7 @@ public class Luggage {
 
     public Luggage(Double weight) throws LuggageWeightException {
         if (weight > max_weight) {
-            throw new LuggageWeightException(max_weight - weight);
+            throw new LuggageWeightException(weight - max_weight);
         }
         this.weight = weight;
     }

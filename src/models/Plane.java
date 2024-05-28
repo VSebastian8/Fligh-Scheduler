@@ -18,6 +18,14 @@ public abstract class Plane {
         return max_weight;
     }
 
+    public void increaseWeight(Double weight) {
+        current_weight += weight;
+    }
+
+    public void decreaseWeight(Double weight) {
+        current_weight -= weight;
+    }
+
     public Double getCurrent_weight() {
         return current_weight;
     }
@@ -33,6 +41,8 @@ public abstract class Plane {
     public Integer getPlaneID() {
         return planeID;
     }
+
+    abstract Integer[] getReservedSeats();
 
     abstract public String toString();
 }

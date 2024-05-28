@@ -28,6 +28,8 @@ public interface DatabaseInterface {
 
     void updateTicket(Ticket ticket);
 
+    void updatePlane(Plane plane);
+
     String querySelect(String query);
 
     default void selectDatabase() {

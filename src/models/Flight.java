@@ -55,6 +55,19 @@ public class Flight {
         }
     }
 
+    public void vacateSeat(Integer seat) {
+        if (plane instanceof Airline)
+            ((Airline) plane).vacateSeat(seat);
+    }
+
+    public void addSuitcase(Double weight) {
+        plane.increaseWeight(weight);
+    }
+
+    public void takeoffSuitcase(Double weight) {
+        plane.decreaseWeight(weight);
+    }
+
     public Double luggagePrice() {
         return ((Airline) plane).luggagePrice();
     }
@@ -72,6 +85,10 @@ public class Flight {
             return ((Airline) plane).getSeatNumber();
         }
         return -1;
+    }
+
+    public Plane getPlane() {
+        return plane;
     }
 
     @Override

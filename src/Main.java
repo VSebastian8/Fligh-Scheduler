@@ -19,6 +19,19 @@ public class Main {
         }
     }
 
+    static Double gatherDouble(Scanner scanner, String message) {
+        while (true) {
+            try {
+                double a = scanner.nextDouble();
+                scanner.nextLine();
+                return a;
+            } catch (InputMismatchException e) {
+                System.out.println(message);
+                scanner.nextLine();
+            }
+        }
+    }
+
     static boolean getConfirmation(Scanner scanner, String message) {
         System.out.println(message);
         while (true) {
@@ -73,8 +86,32 @@ public class Main {
                 }
             }
         }
+
+
+        if (getConfirmation(scanner, "Do you have any luggage to add? (y/n)")) {
+            System.out.println("Please specify the suitcase's weight");
+            Double w = gatherDouble(scanner, "Please insert a real number");
+            try {
+                Luggage lug = new Luggage(w);
+                new_ticket.addLuggage(lug);
+            } catch (LuggageWeightException err) {
+                System.out.println(err.getMessage());
+            }
+            while (getConfirmation(scanner, "Add more? (y/n)")) {
+                System.out.println("Please specify the suitcase's weight");
+                Double ww = gatherDouble(scanner, "Please insert a real number");
+                try {
+                    Luggage lug = new Luggage(ww);
+                    new_ticket.addLuggage(lug);
+                } catch (LuggageWeightException err) {
+                    System.out.println(err.getMessage());
+                }
+            }
+        }
+
         data.tickets.add(new_ticket);
         data.addTicket(new_ticket);
+        data.updatePlane(new_ticket.getPlane());
         System.out.println("You have successfully made the following reservation:");
         System.out.println(new_ticket);
     }
@@ -96,7 +133,10 @@ public class Main {
         if (!proceed)
             return;
 
+        delete_ticket.delete();
         data.deleteTicket(delete_ticket);
+        data.updatePlane(delete_ticket.getPlane());
+        data.tickets.remove(delete_ticket);
         System.out.println("Ticket deleted successfully\n");
     }
 
@@ -122,6 +162,7 @@ public class Main {
             try {
                 change_ticket.changeSeat(new_seat);
                 data.updateTicket(change_ticket);
+                data.updatePlane(change_ticket.getPlane());
                 break;
             } catch (CargoPlaneException err) {
                 System.out.println(err.getMessage());

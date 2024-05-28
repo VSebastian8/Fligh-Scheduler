@@ -48,6 +48,7 @@ public class Ticket {
 
     public void changeSeat(Integer seat) throws CargoPlaneException, TakenSeatException, IndexOutOfBoundsException {
         this.price += flight.makeReservation(seat);
+        flight.vacateSeat(this.seat);
         this.seat = seat;
     }
 
@@ -55,12 +56,23 @@ public class Ticket {
         // Check if there's space on the plane for the extra luggage
         if (flight.leftCapacity() < suitcase.getWeight())
             return;
+        flight.addSuitcase(suitcase.getWeight());
 
         Luggage[] new_luggage = new Luggage[luggage.length + 1];
         System.arraycopy(luggage, 0, new_luggage, 0, luggage.length);
         new_luggage[luggage.length] = new Luggage(suitcase);
         luggage = new_luggage;
         price += flight.luggagePrice();
+    }
+
+    public void delete() {
+        //Takes off all the luggage from the plane and frees up the seat
+        double total_weight = 0;
+        for (Luggage w : luggage) {
+            total_weight += w.getWeight();
+        }
+        flight.takeoffSuitcase(total_weight);
+        flight.vacateSeat(seat);
     }
 
     public Integer getID() {
@@ -77,6 +89,10 @@ public class Ticket {
 
     public Double getPrice() {
         return price;
+    }
+
+    public Plane getPlane() {
+        return flight.getPlane();
     }
 
     public Double[] getLuggage() {

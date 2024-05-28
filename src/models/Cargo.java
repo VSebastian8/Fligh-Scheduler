@@ -6,6 +6,11 @@ public class Cargo extends Plane {
     }
 
     @Override
+    public Integer[] getReservedSeats() {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return "Cargo Plane{" +
                 "max_weight = " + max_weight + " kg" +

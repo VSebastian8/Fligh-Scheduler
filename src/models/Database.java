@@ -23,6 +23,11 @@ public class Database implements DatabaseInterface {
     private static final String ALL_FLIGHTS = "SELECT * FROM \"FLIGHTS\"";
     private static final String ALL_TICKETS = "SELECT * FROM \"TICKETS\"";
 
+    private static final String INSERT_TICKET = "INSERT INTO \"TICKETS\" VALUES(?, ?, ?, ?, ?)";
+    private static final String DELETE_TICKET = "DELETE FROM \"TICKETS\" WHERE id = ?";
+    private static final String UPDATE_TICKET = "UPDATE \"TICKETS\" SET flight = ?, seat = ?, price = ?, luggage = ? WHERE id = ?";
+    private static final String UPDATE_PLANE = "UPDATE \"PLANES\" SET current_weight = ?, reserved_seats = ? WHERE id = ?";
+
     public static final String AVAILABLE_FLIGHTS = "SELECT name, source, destination, type, distance, duration, day FROM \"FLIGHTS\" JOIN \"PLANES\" ON plane_id = id WHERE (type = 'Jet' OR type = 'Glider') AND current_date < day";
     public static final String ORDERED_FLIGHTS = "SELECT name, source, destination, distance, day FROM \"FLIGHTS\" ORDER BY distance ASC";
     public static final String STOPOVER_FLIGHTS = "SELECT * FROM \"FLIGHTS\" WHERE stopover is not null";
@@ -193,7 +198,6 @@ public class Database implements DatabaseInterface {
     }
 
     public void addTicket(Ticket t) {
-        String INSERT_TICKET = "INSERT INTO \"TICKETS\" VALUES(?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(INSERT_TICKET)) {
             preparedStatement.setInt(1, t.getID());
             preparedStatement.setString(2, t.getFlightName());
@@ -210,7 +214,6 @@ public class Database implements DatabaseInterface {
     }
 
     public void deleteTicket(Ticket t) {
-        String DELETE_TICKET = "DELETE FROM \"TICKETS\" WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(DELETE_TICKET)) {
             preparedStatement.setInt(1, t.getID());
 
@@ -221,7 +224,6 @@ public class Database implements DatabaseInterface {
     }
 
     public void updateTicket(Ticket t) {
-        String UPDATE_TICKET = "UPDATE \"TICKETS\" SET flight = ?, seat = ?, price = ?, luggage = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(UPDATE_TICKET)) {
             preparedStatement.setString(1, t.getFlightName());
             preparedStatement.setInt(2, t.getSeat());
@@ -231,6 +233,19 @@ public class Database implements DatabaseInterface {
             preparedStatement.setArray(4, weights);
 
             preparedStatement.setInt(5, t.getID());
+            preparedStatement.execute();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
+    public void updatePlane(Plane p) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(UPDATE_PLANE)) {
+            preparedStatement.setDouble(1, p.getCurrent_weight());
+            java.sql.Array seats = getConnection().createArrayOf("Integer", p.getReservedSeats());
+            preparedStatement.setArray(2, seats);
+
+            preparedStatement.setInt(3, p.getPlaneID());
             preparedStatement.execute();
         } catch (SQLException err) {
             System.out.println(err.getMessage());

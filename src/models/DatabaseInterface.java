@@ -22,6 +22,8 @@ public interface DatabaseInterface {
 
     void showTickets();
 
+    void addTicket(Ticket ticket);
+
     default void showDatabase() {
         showAirports();
         System.out.println();

@@ -27,6 +27,7 @@ public class Ticket {
                 System.out.println("Wrong values from database?");
             }
         }
+        Ticket.counterId = Math.max(Ticket.counterId, this.id);
     }
 
     public Ticket(Flight flight) throws CargoPlaneException, PlaneSeatsException {
@@ -60,6 +61,29 @@ public class Ticket {
         new_luggage[luggage.length] = new Luggage(suitcase);
         luggage = new_luggage;
         price += flight.luggagePrice();
+    }
+
+    public Integer getID() {
+        return id;
+    }
+
+    public String getFlightName() {
+        return flight.getName();
+    }
+
+    public Integer getSeat() {
+        return seat;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Double[] getLuggage() {
+        Double[] weights = new Double[luggage.length];
+        for (int i = 0; i < luggage.length; i++)
+            weights[i] = luggage[i].getWeight();
+        return weights;
     }
 
     @Override

@@ -178,4 +178,22 @@ public class Database implements DatabaseInterface {
         for (Ticket t : tickets)
             System.out.println(t);
     }
+
+    public void addTicket(Ticket t) {
+        String INSERT_TICKET = "INSERT INTO \"TICKETS\" VALUES(?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(INSERT_TICKET)) {
+            preparedStatement.setInt(1, t.getID());
+            preparedStatement.setString(2, t.getFlightName());
+            preparedStatement.setInt(3, t.getSeat());
+            preparedStatement.setDouble(4, t.getPrice());
+
+            java.sql.Array weights = getConnection().createArrayOf("Double", t.getLuggage());
+            preparedStatement.setArray(5, weights);
+
+            preparedStatement.execute();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
 }

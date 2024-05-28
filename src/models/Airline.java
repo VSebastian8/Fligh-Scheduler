@@ -47,6 +47,10 @@ public abstract class Airline extends Plane {
         }
     }
 
+    public Integer getSeatNumber() {
+        return seat_number;
+    }
+
     abstract public Function<Double, Double> ticketPrice();
 
     abstract public Double luggagePrice();

@@ -67,6 +67,13 @@ public class Flight {
         return name;
     }
 
+    public int max_seat() {
+        if (plane instanceof Airline) {
+            return ((Airline) plane).getSeatNumber();
+        }
+        return -1;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +

@@ -86,6 +86,10 @@ public class Ticket {
         return weights;
     }
 
+    public int max_seat() {
+        return flight.max_seat();
+    }
+
     @Override
     public String toString() {
         return "Ticket{" +

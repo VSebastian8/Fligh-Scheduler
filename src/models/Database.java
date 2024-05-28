@@ -148,6 +148,14 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
+    public Ticket find_ticket(Integer ticket_id) {
+        for (Ticket ticket : tickets) {
+            if (ticket_id.equals(ticket.getID()))
+                return ticket;
+        }
+        return null;
+    }
+
     public void selectTickets() {
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(ALL_TICKETS);
              ResultSet rs = preparedStatement.executeQuery()) {

@@ -91,18 +91,28 @@ public class Flight {
         return plane;
     }
 
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public boolean connectsTo(Airport air) {
+        if (air == null)
+            return false;
+        return air.equals(source) || air.equals(destination) || air.equals(stopover);
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
                 "name = " + name +
-                ", " + source.getCity() + " -> " + destination.getCity() +
+                ", " + source.getCity() + " -> " + (stopover == null ? "" : "(" + stopover.getCity() + ") -> ") + destination.getCity() +
                 ", distance = " + distance + " km" +
                 ", duration = " + duration + " min" +
                 ", takeoff_time = '" + takeoff_time +
                 ", landing_time = '" + landing_time +
                 ", day = '" + day +
                 ", plane = " + plane +
-                (stopover == null ? "" : ", stopover=" + stopover) +
+
                 '}';
     }
 }

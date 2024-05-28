@@ -4,6 +4,7 @@ import enums.Cities;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Database implements DatabaseInterface {
@@ -278,5 +279,16 @@ public class Database implements DatabaseInterface {
             System.out.println(err.getMessage());
             return "Encountered an error while executing query: " + query;
         }
+    }
+
+    public List<Flight> getFlightsByAirport(String city) {
+        Airport air = find_airport(city);
+        return flights.stream().filter(f -> f.connectsTo(air)).sorted(
+                new Comparator<Flight>() {
+                    public int compare(Flight f1, Flight f2) {
+                        return f1.getDuration().compareTo(f2.getDuration());
+                    }
+                }
+        ).toList();
     }
 }

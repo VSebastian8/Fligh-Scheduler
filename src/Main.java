@@ -3,6 +3,7 @@ import models.*;
 import exceptions.*;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -212,7 +213,13 @@ public class Main {
                     System.out.println(data.querySelect(Database.STOPOVER_FLIGHTS));
                     break;
                 case 4:
-                    System.out.println(Database.getDatabase().flights);
+                    System.out.println("Search for a specific airport:");
+                    String city = scanner.nextLine();
+                    List<Flight> result = data.getFlightsByAirport(city);
+                    if (result.isEmpty())
+                        System.out.println("We couldn't find any flights from or to " + city);
+                    else
+                        System.out.println(String.join("\n", result.stream().map(Flight::toString).toList()));
                     break;
                 case 5:
                     createTicketDialog(scanner, data);
@@ -225,6 +232,7 @@ public class Main {
                     break;
                 case 8:
                     System.out.println("Thank you for your time!");
+                    scanner.close();
                     System.exit(0);
             }
         }

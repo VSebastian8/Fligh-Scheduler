@@ -24,6 +24,10 @@ public interface DatabaseInterface {
 
     void addTicket(Ticket ticket);
 
+    void deleteTicket(Ticket ticket);
+
+    void updateTicket(Ticket ticket);
+
     default void showDatabase() {
         showAirports();
         System.out.println();

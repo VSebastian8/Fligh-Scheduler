@@ -15,7 +15,7 @@ public class Main {
         data.selectFlights();
         data.selectTickets();
 
-        data.showDatabase();
+        //data.showDatabase();
 
         Ticket ticket3;
         try {
@@ -27,9 +27,12 @@ public class Main {
             System.out.println(err.getMessage());
             try {
                 ticket3 = new Ticket(data.flights.get(3));
-                ticket3.changeSeat(18);
                 System.out.println(ticket3.toString());
                 data.addTicket(ticket3);
+
+                ticket3.changeSeat(18);
+                System.out.println(ticket3.toString());
+                data.updateTicket(ticket3);
             } catch (Exception errr) {
                 System.out.println(errr.getMessage());
             }

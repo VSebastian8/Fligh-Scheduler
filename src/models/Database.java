@@ -196,4 +196,31 @@ public class Database implements DatabaseInterface {
         }
     }
 
+    public void deleteTicket(Ticket t) {
+        String DELETE_TICKET = "DELETE FROM \"TICKETS\" WHERE id = ?";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(DELETE_TICKET)) {
+            preparedStatement.setInt(1, t.getID());
+
+            preparedStatement.execute();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
+
+    public void updateTicket(Ticket t) {
+        String UPDATE_TICKET = "UPDATE \"TICKETS\" SET flight = ?, seat = ?, price = ?, luggage = ? WHERE id = ?";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(UPDATE_TICKET)) {
+            preparedStatement.setString(1, t.getFlightName());
+            preparedStatement.setInt(2, t.getSeat());
+            preparedStatement.setDouble(3, t.getPrice());
+
+            java.sql.Array weights = getConnection().createArrayOf("Double", t.getLuggage());
+            preparedStatement.setArray(4, weights);
+
+            preparedStatement.setInt(5, t.getID());
+            preparedStatement.execute();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    }
 }

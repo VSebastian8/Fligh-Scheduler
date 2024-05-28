@@ -1,6 +1,7 @@
-import enums.Cities;
 import models.*;
 import exceptions.*;
+import repository.Database;
+import service.FileService;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -90,29 +91,26 @@ public class Main {
 
 
         if (getConfirmation(scanner, "Do you have any luggage to add? (y/n)")) {
-            System.out.println("Please specify the suitcase's weight");
-            Double w = gatherDouble(scanner, "Please insert a real number");
-            try {
-                Luggage lug = new Luggage(w);
-                new_ticket.addLuggage(lug);
-            } catch (LuggageWeightException err) {
-                System.out.println(err.getMessage());
-            }
-            while (getConfirmation(scanner, "Add more? (y/n)")) {
+            do {
                 System.out.println("Please specify the suitcase's weight");
-                Double ww = gatherDouble(scanner, "Please insert a real number");
+                Double w = gatherDouble(scanner, "Please insert a real number");
                 try {
-                    Luggage lug = new Luggage(ww);
+                    Luggage lug = new Luggage(w);
                     new_ticket.addLuggage(lug);
                 } catch (LuggageWeightException err) {
                     System.out.println(err.getMessage());
                 }
-            }
+            } while (getConfirmation(scanner, "Add more? (y/n)"));
         }
 
         data.tickets.add(new_ticket);
         data.addTicket(new_ticket);
         data.updatePlane(new_ticket.getPlane());
+
+        FileService fileservice = FileService.getFileService();
+        fileservice.writeFile("You have created the following ticket:\n");
+        fileservice.writeObjectToFile(new_ticket);
+
         System.out.println("You have successfully made the following reservation:");
         System.out.println(new_ticket);
     }
@@ -195,10 +193,11 @@ public class Main {
             System.out.println("5. make a new reservation");
             System.out.println("6. delete a ticket");
             System.out.println("7. change your seat (costs extra)");
-            System.out.println("8. exit");
+            System.out.println("8. autdit");
+            System.out.println("9. exit");
             System.out.println("\u001B[0m"); // Color reset
 
-            int o = gatherInt(scanner, "Please enter a number between 1 and 4");
+            int o = gatherInt(scanner, "Please enter a number between 1 and 9");
             switch (o) {
                 case 1:
                     System.out.println("Available flights:\n");
@@ -231,6 +230,11 @@ public class Main {
                     changeTicketDialog(scanner, data);
                     break;
                 case 8:
+                    FileService fileservice = FileService.getFileService();
+                    fileservice.generateReport(data.tickets);
+                    System.out.println("Generated audit!");
+                    break;
+                case 9:
                     System.out.println("Thank you for your time!");
                     scanner.close();
                     System.exit(0);

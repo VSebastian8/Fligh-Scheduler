@@ -1,7 +1,7 @@
 package models;
 
 public abstract class Plane {
-    static Integer counterID = 0;
+    static public Integer counterID = 0;
     protected Integer max_weight;
     protected Integer max_distance;
     protected Double current_weight;
@@ -42,7 +42,7 @@ public abstract class Plane {
         return planeID;
     }
 
-    abstract Integer[] getReservedSeats();
+    abstract public Integer[] getReservedSeats();
 
     abstract public String toString();
 }

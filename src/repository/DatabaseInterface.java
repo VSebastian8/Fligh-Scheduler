@@ -1,4 +1,7 @@
-package models;
+package repository;
+
+import models.Plane;
+import models.Ticket;
 
 import java.sql.Connection;
 import java.sql.SQLException;

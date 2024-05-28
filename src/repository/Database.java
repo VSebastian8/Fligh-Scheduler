@@ -1,6 +1,7 @@
-package models;
+package repository;
 
 import enums.Cities;
+import models.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -284,7 +285,7 @@ public class Database implements DatabaseInterface {
     public List<Flight> getFlightsByAirport(String city) {
         Airport air = find_airport(city);
         return flights.stream().filter(f -> f.connectsTo(air)).sorted(
-                new Comparator<Flight>() {
+                new Comparator<>() {
                     public int compare(Flight f1, Flight f2) {
                         return f1.getDuration().compareTo(f2.getDuration());
                     }

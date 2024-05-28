@@ -5,13 +5,15 @@ import exceptions.LuggageWeightException;
 import exceptions.PlaneSeatsException;
 import exceptions.TakenSeatException;
 
-public class Ticket {
+import java.io.Serializable;
+
+public class Ticket implements Serializable {
     private Double price;
     private Integer seat;
-    private final Flight flight;
-    private Luggage[] luggage;
+    transient private final Flight flight;
+    transient private Luggage[] luggage;
     private final Integer id;
-    static Integer counterId = 0;
+    static public Integer counterId = 0;
 
     public Ticket(Double price, Integer seat, Flight flight, Integer id, Double[] luggage_weights) {
         this.price = price;
@@ -94,6 +96,7 @@ public class Ticket {
     public Plane getPlane() {
         return flight.getPlane();
     }
+
 
     public Double[] getLuggage() {
         Double[] weights = new Double[luggage.length];

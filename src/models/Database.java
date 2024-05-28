@@ -18,6 +18,15 @@ public class Database implements DatabaseInterface {
     public List<Flight> flights;
     public List<Ticket> tickets;
 
+    private static final String ALL_AIRPORTS = "SELECT * FROM \"AIRPORTS\"";
+    private static final String ALL_PLANES = "SELECT * FROM \"PLANES\"";
+    private static final String ALL_FLIGHTS = "SELECT * FROM \"FLIGHTS\"";
+    private static final String ALL_TICKETS = "SELECT * FROM \"TICKETS\"";
+
+    public static final String AVAILABLE_FLIGHTS = "SELECT name, source, destination, type, distance, duration, day FROM \"FLIGHTS\" JOIN \"PLANES\" ON plane_id = id WHERE (type = 'Jet' OR type = 'Glider') AND current_date < day";
+    public static final String ORDERED_FLIGHTS = "SELECT name, source, destination, distance, day FROM \"FLIGHTS\" ORDER BY distance ASC";
+    public static final String STOPOVER_FLIGHTS = "SELECT * FROM \"FLIGHTS\" WHERE stopover is not null";
+
     private Database() {
         airports = new ArrayList<>();
         planes = new ArrayList<>();
@@ -38,8 +47,7 @@ public class Database implements DatabaseInterface {
 
     @Override
     public void selectAirports() {
-        String ALL_FLIGHTS = "SELECT * FROM \"AIRPORTS\"";
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(ALL_FLIGHTS);
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(ALL_AIRPORTS);
              ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
                 Cities city = Cities.valueOf(rs.getString("city"));
@@ -56,7 +64,6 @@ public class Database implements DatabaseInterface {
     }
 
     public void selectPlanes() {
-        String ALL_PLANES = "SELECT * FROM \"PLANES\"";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(ALL_PLANES);
              ResultSet rs = preparedStatement.executeQuery()) {
             int max_id = 0;
@@ -105,7 +112,7 @@ public class Database implements DatabaseInterface {
         return null;
     }
 
-    private Plane find_plane(Integer plane_id) {
+    public Plane find_plane(Integer plane_id) {
         for (Plane plane : planes) {
             if (plane.getPlaneID().equals(plane_id)) {
                 return plane;
@@ -115,7 +122,6 @@ public class Database implements DatabaseInterface {
     }
 
     public void selectFlights() {
-        String ALL_FLIGHTS = "SELECT * FROM \"FLIGHTS\"";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(ALL_FLIGHTS);
              ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
@@ -133,7 +139,7 @@ public class Database implements DatabaseInterface {
         }
     }
 
-    private Flight find_flight(String name) {
+    public Flight find_flight(String name) {
         for (Flight flight : flights) {
             if (flight.getName().equals(name)) {
                 return flight;
@@ -143,7 +149,6 @@ public class Database implements DatabaseInterface {
     }
 
     public void selectTickets() {
-        String ALL_TICKETS = "SELECT * FROM \"TICKETS\"";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(ALL_TICKETS);
              ResultSet rs = preparedStatement.executeQuery()) {
             while (rs.next()) {
@@ -221,6 +226,34 @@ public class Database implements DatabaseInterface {
             preparedStatement.execute();
         } catch (SQLException err) {
             System.out.println(err.getMessage());
+        }
+    }
+
+    public String querySelect(String query) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            ResultSet res = preparedStatement.executeQuery();
+            StringBuilder str = new StringBuilder();
+            int columnCount = res.getMetaData().getColumnCount();
+            if (columnCount == 0)
+                return "No results found";
+
+            for (int i = 1; i <= columnCount; i++) {
+                str.append(res.getMetaData().getColumnName(i).toUpperCase());
+                str.append(" | ");
+            }
+            str.append("\n");
+            while (res.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    str.append(res.getString(i));
+                    str.append(", ");
+                    if (i == columnCount)
+                        str.append("\n");
+                }
+            }
+            return str.toString();
+        } catch (SQLException err) {
+            System.out.println(err.getMessage());
+            return "Encountered an error while executing query: " + query;
         }
     }
 }

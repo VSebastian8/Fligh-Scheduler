@@ -8,7 +8,7 @@ public class Cargo extends Plane {
     @Override
     public String toString() {
         return "Cargo Plane{" +
-                "max_weight = " + max_weight +
+                "max_weight = " + max_weight + " kg" +
                 ", max_distance = " + max_distance +
                 "}";
     }

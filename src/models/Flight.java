@@ -72,8 +72,8 @@ public class Flight {
         return "Flight{" +
                 "name = " + name +
                 ", " + source.getCity() + " -> " + destination.getCity() +
-                ", distance = " + distance +
-                ", duration = " + duration +
+                ", distance = " + distance + " km" +
+                ", duration = " + duration + " min" +
                 ", takeoff_time = '" + takeoff_time +
                 ", landing_time = '" + landing_time +
                 ", day = '" + day +
